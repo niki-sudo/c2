@@ -50,11 +50,26 @@
     body {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
       background: var(--body-bg);
       margin: 0;
+      padding: 24px;
       transition: background 0.25s ease;
+    }
+    .app {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .history-card {
+      width: 260px;
+      border-radius: 16px;
+      background: var(--card-bg);
+      color: var(--card-fg);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+      border: 1px solid var(--grid-bg);
     }
     .calculator {
       width: 320px;
@@ -77,7 +92,8 @@
     .panel {
       background: var(--display-bg);
       padding: 12px 16px;
-      border-top: 1px solid var(--grid-bg);
+      border-radius: 16px 16px 0 0;
+      border-bottom: 1px solid var(--grid-bg);
     }
     .panel h2 {
       margin: 0 0 8px;
@@ -159,40 +175,45 @@
   </style>
 </head>
 <body>
-  <div class="calculator">
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
-    <div id="display" class="display">0</div>
-    <div class="panel">
-      <h2>
-        Журнал операций
-        <button id="history-clear" aria-label="Очистить журнал">Очистить</button>
-      </h2>
+  <div class="app">
+    <aside class="history-card">
+      <div class="panel">
+        <h2>
+          Журнал операций
+          <button id="history-clear" aria-label="Очистить журнал">Очистить</button>
+        </h2>
+      </div>
       <ul id="history" class="history-list"></ul>
       <div id="history-empty" class="history-empty">Пока нет записей.</div>
-    </div>
-    <div class="buttons">
-      <button data-action="clear" class="wide">C</button>
-      <button data-action="backspace">⌫</button>
-      <button data-value="/">÷</button>
+    </aside>
 
-      <button data-value="7">7</button>
-      <button data-value="8">8</button>
-      <button data-value="9">9</button>
-      <button data-value="*" class="operator">×</button>
+    <div class="calculator">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+      <div id="display" class="display">0</div>
+      <div class="buttons">
+        <button data-action="clear" class="wide">C</button>
+        <button data-action="backspace">⌫</button>
+        <button data-value="/">÷</button>
 
-      <button data-value="4">4</button>
-      <button data-value="5">5</button>
-      <button data-value="6">6</button>
-      <button data-value="-" class="operator">−</button>
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button data-value="*" class="operator">×</button>
 
-      <button data-value="1">1</button>
-      <button data-value="2">2</button>
-      <button data-value="3">3</button>
-      <button data-value="+" class="operator">+</button>
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button data-value="-" class="operator">−</button>
 
-      <button data-value="0" class="wide">0</button>
-      <button data-value=".">.</button>
-      <button data-action="equals" class="equal">=</button>
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button data-value="+" class="operator">+</button>
+
+        <button data-value="0" class="wide">0</button>
+        <button data-value=".">.</button>
+        <button data-action="equals" class="equal">=</button>
+      </div>
     </div>
   </div>
 
