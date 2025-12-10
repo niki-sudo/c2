@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calculator</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, sans-serif;
+      color-scheme: light dark;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #f3f4f6, #dfe3e8);
+      margin: 0;
+    }
+    .calculator {
+      width: 320px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+      background: #111827;
+      color: #f9fafb;
+    }
+    .display {
+      padding: 16px;
+      background: rgba(255,255,255,0.05);
+      text-align: right;
+      font-size: 2rem;
+      min-height: 64px;
+      box-sizing: border-box;
+      word-wrap: break-word;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+    button {
+      padding: 20px;
+      font-size: 1.1rem;
+      border: none;
+      background: #1f2937;
+      color: #f9fafb;
+      cursor: pointer;
+      transition: background 0.12s ease;
+    }
+    button:hover { background: #374151; }
+    button.operator { background: #2563eb; }
+    button.operator:hover { background: #1d4ed8; }
+    button[data-action="clear"] { background: #dc2626; }
+    button[data-action="clear"]:hover { background: #b91c1c; }
+    button.equal { background: #10b981; grid-column: span 2; }
+    button.equal:hover { background: #059669; }
+    button.wide { grid-column: span 2; }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div id="display" class="display">0</div>
+    <div class="buttons">
+      <button data-action="clear" class="wide">C</button>
+      <button data-action="backspace">⌫</button>
+      <button data-value="/">÷</button>
+
+      <button data-value="7">7</button>
+      <button data-value="8">8</button>
+      <button data-value="9">9</button>
+      <button data-value="*" class="operator">×</button>
+
+      <button data-value="4">4</button>
+      <button data-value="5">5</button>
+      <button data-value="6">6</button>
+      <button data-value="-" class="operator">−</button>
+
+      <button data-value="1">1</button>
+      <button data-value="2">2</button>
+      <button data-value="3">3</button>
+      <button data-value="+" class="operator">+</button>
+
+      <button data-value="0" class="wide">0</button>
+      <button data-value=".">.</button>
+      <button data-action="equals" class="equal">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    const buttons = document.querySelector('.buttons');
+
+    let expression = '';
+
+    const updateDisplay = (value) => {
+      display.textContent = value || '0';
+    };
+
+    const appendValue = (val) => {
+      expression += val;
+      updateDisplay(expression);
+    };
+
+    const clearAll = () => {
+      expression = '';
+      updateDisplay(expression);
+    };
+
+    const backspace = () => {
+      expression = expression.slice(0, -1);
+      updateDisplay(expression);
+    };
+
+    const evaluateExpression = () => {
+      if (!expression) return;
+      try {
+        const result = Function(`"use strict"; return (${expression})`)();
+        expression = String(result);
+        updateDisplay(expression);
+      } catch (err) {
+        updateDisplay('Error');
+        expression = '';
+      }
+    };
+
+    buttons.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target.tagName !== 'BUTTON') return;
+
+      const value = target.getAttribute('data-value');
+      const action = target.getAttribute('data-action');
+
+      if (action === 'clear') return clearAll();
+      if (action === 'backspace') return backspace();
+      if (action === 'equals') return evaluateExpression();
+      if (value) appendValue(value);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const { key } = event;
+      if ('0123456789+-*/.'.includes(key)) appendValue(key);
+      else if (key === 'Enter' || key === '=') evaluateExpression();
+      else if (key === 'Backspace') backspace();
+      else if (key === 'Escape') clearAll();
+    });
+  </script>
+</body>
+</html>
+
